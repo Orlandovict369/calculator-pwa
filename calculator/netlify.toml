@@ -1,0 +1,51 @@
+# Netlify deployment configuration for PWA
+# This ensures proper MIME types and security headers for PWA functionality
+
+[build]
+  # No build command needed for vanilla HTML/CSS/JS
+  publish = "."
+
+[[headers]]
+  # Apply headers to all routes
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # PWA specific headers
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  # Manifest file headers
+  for = "/manifest.json"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]  
+  # Service worker headers
+  for = "/sw.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  # HTML files
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[redirects]]
+  # SPA fallback for PWA
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"], Country = ["!US"]}
+
+# PWA specific configurations
+[[edge_functions]]
+  function = "pwa-cache"
+  path = "/sw.js" 

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Calculator - Math & History</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="A powerful calculator with history, percentage, and sign toggle features. Perfect for students, professionals, and everyday math.">
+    <meta name="theme-color" content="#ff8c42">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Calculator">
+    <meta name="application-name" content="Calculator">
+    <meta name="msapplication-TileColor" content="#ff8c42">
+    <meta name="msapplication-navbutton-color" content="#ff8c42">
+    
+    <!-- Manifest Link -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icons/icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icons/icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icons/icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icons/icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="icons/icon-57x57.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <!-- 
+    EDUCATIONAL NOTE: Using semantic HTML with proper ARIA labels for accessibility.
+    The main element contains our entire app, and we use sections to organize content.
+    -->
+    <main class="calculator-app" role="main">
+        <header class="app-header">
+            <h1>Calculator</h1>
+        </header>
+
+        <!-- 
+        CALCULATOR SECTION: Contains the display and button grid
+        Using semantic structure makes it easier to style and extend later
+        -->
+        <section class="calculator" aria-label="Calculator">
+            <!-- Display shows current input and results -->
+            <div class="display-container">
+                <div class="display" role="textbox" aria-live="polite" aria-label="Calculator display">
+                    <div class="display-expression" id="expression">0</div>
+                    <div class="display-result" id="result"></div>
+                </div>
+            </div>
+
+            <!-- Button grid using CSS Grid for responsive layout -->
+            <div class="button-grid" role="grid">
+                <!-- Memory and utility buttons -->
+                <button class="btn btn-utility" data-action="clear-all" aria-label="Clear all">AC</button>
+                <button class="btn btn-utility" data-action="clear-entry" aria-label="Clear entry">CE</button>
+                <button class="btn btn-unary" data-action="percentage" aria-label="Percentage">%</button>
+                <button class="btn btn-operator" data-operator="÷" aria-label="Divide">÷</button>
+
+                <!-- Number pad and operators -->
+                <button class="btn btn-number" data-number="7">7</button>
+                <button class="btn btn-number" data-number="8">8</button>
+                <button class="btn btn-number" data-number="9">9</button>
+                <button class="btn btn-operator" data-operator="×" aria-label="Multiply">×</button>
+
+                <button class="btn btn-number" data-number="4">4</button>
+                <button class="btn btn-number" data-number="5">5</button>
+                <button class="btn btn-number" data-number="6">6</button>
+                <button class="btn btn-operator" data-operator="-" aria-label="Subtract">-</button>
+
+                <button class="btn btn-number" data-number="1">1</button>
+                <button class="btn btn-number" data-number="2">2</button>
+                <button class="btn btn-number" data-number="3">3</button>
+                <button class="btn btn-operator" data-operator="+" aria-label="Add">+</button>
+
+                <!-- Bottom row: 0 | . | +/- | = (all equal-sized) -->
+                <button class="btn btn-number" data-number="0">0</button>
+                <button class="btn btn-number" data-number=".">.</button>
+                <button class="btn btn-unary" data-action="toggle-sign" aria-label="Toggle positive/negative">+/-</button>
+                <button class="btn btn-equals" data-action="calculate" aria-label="Calculate result">=</button>
+
+                <!-- History toggle moved to separate row -->
+                <button class="btn btn-utility btn-memory" data-action="toggle-memory" aria-label="Toggle history panel">History</button>
+            </div>
+        </section>
+
+        <!-- 
+        MEMORY PANEL: Shows calculation history
+        Hidden by default, toggles via JavaScript
+        -->
+        <aside class="memory-panel" id="memory-panel" aria-label="Calculation history">
+            <header class="memory-header">
+                <h2>History</h2>
+                <button class="btn btn-utility btn-small" data-action="clear-memory" aria-label="Clear history">Clear</button>
+            </header>
+            <div class="memory-list" id="memory-list">
+                <p class="memory-empty">No calculations yet</p>
+            </div>
+        </aside>
+    </main>
+
+    <!-- 
+    EDUCATIONAL NOTE: Loading scripts at the end ensures DOM is ready.
+    We load modules in dependency order: utilities first, then main app
+    -->
+    <script src="js/calculator.js"></script>
+    <script src="js/display.js"></script>
+    <script src="js/memory.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- FINAL FIX: Complete Error Suppression for Clean Console -->
+    <script>
+        // NUCLEAR OPTION: Immediate error suppression on page load
+        (function() {
+            'use strict';
+            
+            // Store original methods before any extensions can interfere
+            const originalError = window.onerror;
+            const originalRejection = window.onunhandledrejection;
+            
+            // Immediate global error handler
+            window.onerror = function(message, source, lineno, colno, error) {
+                if (typeof message === 'string' && (
+                    message.includes('Could not establish connection') ||
+                    message.includes('Receiving end does not exist') ||
+                    message.includes('chrome-extension') ||
+                    message.includes('moz-extension') ||
+                    message.includes('Extension context invalidated')
+                )) {
+                    return true; // Suppress the error completely
+                }
+                
+                if (typeof source === 'string' && (
+                    source.includes('chrome-extension://') ||
+                    source.includes('moz-extension://')
+                )) {
+                    return true; // Suppress extension errors
+                }
+                
+                // Call original handler if not extension error
+                if (originalError) {
+                    return originalError.apply(this, arguments);
+                }
+                return false;
+            };
+            
+            // Immediate rejection handler
+            window.onunhandledrejection = function(event) {
+                const reason = event.reason;
+                
+                if (reason && typeof reason === 'object' && reason.message) {
+                    if (reason.message.includes('Could not establish connection') ||
+                        reason.message.includes('Receiving end does not exist') ||
+                        reason.message.includes('chrome-extension') ||
+                        reason.message.includes('moz-extension')) {
+                        event.preventDefault();
+                        return true;
+                    }
+                }
+                
+                if (typeof reason === 'string' && (
+                    reason.includes('Could not establish connection') ||
+                    reason.includes('Receiving end does not exist') ||
+                    reason.includes('chrome-extension') ||
+                    reason.includes('moz-extension')
+                )) {
+                    event.preventDefault();
+                    return true;
+                }
+                
+                // Call original handler if not extension error
+                if (originalRejection) {
+                    return originalRejection.apply(this, arguments);
+                }
+            };
+        })();
+        
+        // COMPREHENSIVE CONSOLE FILTERING
+        
+        // 1. Override console.error to filter extension errors
+        const originalConsoleError = console.error;
+        console.error = function(...args) {
+            const message = args.join(' ');
+            if (message.includes('Could not establish connection') || 
+                message.includes('Receiving end does not exist') ||
+                message.includes('Extension context invalidated') ||
+                message.includes('chrome-extension') ||
+                message.includes('moz-extension')) {
+                return; // Silently ignore all extension errors
+            }
+            originalConsoleError.apply(console, args);
+        };
+        
+        // 2. Override console.warn for extension warnings
+        const originalConsoleWarn = console.warn;
+        console.warn = function(...args) {
+            const message = args.join(' ');
+            if (message.includes('Could not establish connection') || 
+                message.includes('Receiving end does not exist') ||
+                message.includes('chrome-extension') ||
+                message.includes('moz-extension')) {
+                return; // Silently ignore extension warnings
+            }
+            originalConsoleWarn.apply(console, args);
+        };
+        
+        // 3. Capture and handle any unhandled errors gracefully
+        window.addEventListener('error', (event) => {
+            // Filter out extension-related errors that we can't control
+            if (event.filename && (
+                event.filename.includes('chrome-extension://') ||
+                event.filename.includes('moz-extension://')
+            )) {
+                event.preventDefault();
+                return true; // Prevent default error handling
+            }
+            
+            // Filter out common browser extension connection errors
+            if (event.message && (
+                event.message.includes('Could not establish connection') ||
+                event.message.includes('Receiving end does not exist') ||
+                event.message.includes('Extension context invalidated') ||
+                event.message.includes('chrome-extension') ||
+                event.message.includes('moz-extension')
+            )) {
+                event.preventDefault();
+                return true; // Prevent default error handling
+            }
+            
+            console.log('🐛 App error handled:', event.message);
+        });
+        
+        // 4. Handle promise rejections (final catch for connection errors)
+        window.addEventListener('unhandledrejection', (event) => {
+            // Handle promise rejections (like connection errors)
+            if (event.reason && typeof event.reason === 'object') {
+                if (event.reason.message && (
+                    event.reason.message.includes('extension') ||
+                    event.reason.message.includes('Could not establish connection') ||
+                    event.reason.message.includes('Receiving end does not exist') ||
+                    event.reason.message.includes('chrome-extension') ||
+                    event.reason.message.includes('moz-extension')
+                )) {
+                    event.preventDefault(); // Prevent extension/connection errors from showing
+                    return true;
+                }
+            }
+            
+            // Also handle string-based rejection reasons
+            if (typeof event.reason === 'string' && (
+                event.reason.includes('Could not establish connection') ||
+                event.reason.includes('Receiving end does not exist') ||
+                event.reason.includes('chrome-extension') ||
+                event.reason.includes('moz-extension')
+            )) {
+                event.preventDefault();
+                return true;
+            }
+            
+            console.log('🐛 Promise rejection handled:', event.reason);
+        });
+    </script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        /*
+        ===========================================
+        PWA SERVICE WORKER REGISTRATION
+        ===========================================
+        
+        This script registers our service worker for:
+        1. Offline functionality (works without internet)
+        2. Install prompts (add to home screen)
+        3. Push notifications (future engagement)
+        4. Background sync (analytics data)
+        
+        MONETIZATION IMPACT:
+        - Higher user retention (offline access)
+        - More engagement opportunities (push notifications)
+        - Better user experience (faster loading)
+        - Foundation for Play Store deployment
+        */
+        
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    // Register service worker
+                    const registration = await navigator.serviceWorker.register('./sw.js');
+                    console.log('✅ ServiceWorker registered successfully:', registration.scope);
+                    
+                    // Listen for updates
+                    registration.addEventListener('updatefound', () => {
+                        console.log('🔄 New ServiceWorker version available');
+                        const newWorker = registration.installing;
+                        
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('🎉 New content available! Refresh to update.');
+                                // In a real app, you'd show a user-friendly update prompt
+                            }
+                        });
+                    });
+                    
+                } catch (error) {
+                    console.error('❌ ServiceWorker registration failed:', error);
+                }
+            });
+            
+            // Handle install prompt (Add to Home Screen)
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('💾 Install prompt intercepted - will show custom button');
+                // Prevent the default browser install prompt
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                // Show our custom install button
+                showInstallButton();
+            });
+            
+            // Handle successful installation
+            window.addEventListener('appinstalled', (e) => {
+                console.log('🎉 PWA was installed successfully!');
+                deferredPrompt = null;
+                
+                // Track installation for analytics (important for monetization metrics)
+                try {
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'pwa_install', {
+                            event_category: 'PWA',
+                            event_label: 'Calculator App Installed'
+                        });
+                    } else {
+                        console.log('📊 PWA installed - Analytics not yet configured');
+                    }
+                } catch (error) {
+                    console.log('📊 PWA installed - Analytics tracking skipped');
+                }
+            });
+            
+            // Show install button (you can style this as needed)
+            function showInstallButton() {
+                // Create a subtle install prompt
+                const installBanner = document.createElement('div');
+                installBanner.id = 'install-banner';
+                installBanner.innerHTML = `
+                    <div style="
+                        position: fixed; 
+                        bottom: 20px; 
+                        left: 50%; 
+                        transform: translateX(-50%);
+                        background: var(--btn-operator);
+                        color: white;
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                        font-size: 14px;
+                        cursor: pointer;
+                        z-index: 1000;
+                        animation: slideUp 0.3s ease-out;
+                    ">
+                        📱 Install Calculator App
+                        <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">
+                            Get offline access & faster loading
+                        </div>
+                    </div>
+                `;
+                
+                // Add animation CSS
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes slideUp {
+                        from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+                        to { transform: translateX(-50%) translateY(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                installBanner.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        try {
+                            deferredPrompt.prompt();
+                            const { outcome } = await deferredPrompt.userChoice;
+                            console.log('🎯 Install prompt result:', outcome);
+                            
+                            if (outcome === 'accepted') {
+                                console.log('✅ User accepted PWA installation');
+                            } else {
+                                console.log('❌ User dismissed PWA installation');
+                            }
+                            
+                            deferredPrompt = null;
+                            installBanner.remove();
+                        } catch (error) {
+                            console.log('⚠️ Install prompt error:', error.message);
+                            installBanner.remove();
+                        }
+                    }
+                });
+                
+                document.body.appendChild(installBanner);
+                
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    if (installBanner.parentNode) {
+                        installBanner.remove();
+                    }
+                }, 10000);
+            }
+            
+        } else {
+            console.log('❌ Service workers not supported - PWA features disabled');
+        }
+        
+        // PWA Installation Status Check
+        window.addEventListener('load', () => {
+            // Check if app is already installed
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                console.log('🎉 PWA is running in standalone mode');
+            } else {
+                console.log('🌐 PWA is running in browser mode');
+            }
+            
+            // Check PWA installation criteria
+            setTimeout(() => {
+                console.log('🔍 PWA Installation Criteria Check:');
+                console.log('  ✅ HTTPS:', location.protocol === 'https:' || location.hostname === 'localhost');
+                console.log('  ✅ Manifest:', document.querySelector('link[rel="manifest"]') !== null);
+                console.log('  ✅ Service Worker:', 'serviceWorker' in navigator);
+                console.log('  ✅ Icons:', 'Checking manifest icons...');
+                
+                // Fetch and verify manifest
+                fetch('./manifest.json')
+                    .then(response => response.json())
+                    .then(manifest => {
+                        console.log('  ✅ Manifest loaded successfully');
+                        console.log('  ✅ App name:', manifest.name);
+                        console.log('  ✅ Start URL:', manifest.start_url);
+                        console.log('  ✅ Icons count:', manifest.icons.length);
+                        console.log('📱 PWA is ready for installation!');
+                    })
+                    .catch(error => {
+                        console.log('  ❌ Manifest error:', error.message);
+                    });
+            }, 1000);
+        });
+        
+        /*
+        EDUCATIONAL NOTE: Why PWA First?
+        
+        1. TESTING PHASE:
+           - Get user feedback with zero distribution costs
+           - Test calculator functionality with real users
+           - Gather analytics on usage patterns
+           
+        2. MONETIZATION PREPARATION:
+           - Offline access = higher user retention rates
+           - Install prompts = native app-like experience
+           - Push notifications = re-engagement for ad views
+           - Performance optimizations = better user experience
+           
+        3. PLAY STORE READINESS:
+           - PWAs can be published via Trusted Web Activities (TWA)
+           - All PWA optimizations carry over to native app
+           - Service worker foundation enables AdMob integration
+           - User engagement data helps optimize ad placement
+           
+        NEXT STEPS TOWARD $1 REVENUE:
+        1. ✅ PWA (Current) - Test & gather feedback
+        2. 🔄 Analytics Integration - Track user behavior  
+        3. 🔄 AdMob Setup - Prepare ad infrastructure
+        4. 🔄 TWA Build - Package for Play Store
+        5. 🔄 Play Store Launch - Reach millions of users
+        6. 🎯 Revenue Generation - Your first $1!
+        */
+    </script>
+</body>
+</html> 

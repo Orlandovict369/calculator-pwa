@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Icon Generator</title>
+</head>
+<body>
+    <h1>Quick PWA Icon Generator</h1>
+    <button onclick="generateIcons()">Generate Required Icons</button>
+    <div id="output"></div>
+
+    <script>
+        function generateIcons() {
+            const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+            const output = document.getElementById('output');
+            output.innerHTML = '<h3>Generating icons...</h3>';
+            
+            sizes.forEach(size => {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                
+                // Create a simple calculator icon
+                // Background
+                ctx.fillStyle = '#ff8c42';
+                ctx.fillRect(0, 0, size, size);
+                
+                // Border
+                ctx.strokeStyle = '#1a1a1a';
+                ctx.lineWidth = size * 0.02;
+                ctx.strokeRect(size * 0.1, size * 0.1, size * 0.8, size * 0.8);
+                
+                // Display area
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(size * 0.15, size * 0.15, size * 0.7, size * 0.2);
+                
+                // Number display
+                ctx.fillStyle = '#ff8c42';
+                ctx.font = `bold ${size * 0.08}px Arial`;
+                ctx.textAlign = 'right';
+                ctx.fillText('123', size * 0.8, size * 0.27);
+                
+                // Buttons grid
+                const buttonSize = size * 0.12;
+                const spacing = size * 0.15;
+                
+                for(let row = 0; row < 3; row++) {
+                    for(let col = 0; col < 4; col++) {
+                        const x = size * 0.15 + col * spacing;
+                        const y = size * 0.4 + row * spacing;
+                        
+                        ctx.fillStyle = row === 2 && col === 3 ? '#ff8c42' : '#666';
+                        ctx.fillRect(x, y, buttonSize, buttonSize);
+                        
+                        ctx.fillStyle = '#fff';
+                        ctx.font = `bold ${size * 0.05}px Arial`;
+                        ctx.textAlign = 'center';
+                        
+                        let text = '';
+                        if(row === 0) text = ['7','8','9','+'][col];
+                        if(row === 1) text = ['4','5','6','-'][col];
+                        if(row === 2) text = ['1','2','3','='][col];
+                        
+                        ctx.fillText(text, x + buttonSize/2, y + buttonSize/2 + size * 0.015);
+                    }
+                }
+                
+                // Download link
+                const link = document.createElement('a');
+                link.download = `icon-${size}x${size}.png`;
+                link.href = canvas.toDataURL();
+                link.textContent = `Download ${size}x${size}`;
+                link.style.display = 'block';
+                link.style.margin = '5px 0';
+                output.appendChild(link);
+                
+                // Auto-click to download
+                link.click();
+            });
+            
+            output.innerHTML += '<p><strong>All icons generated! Save them to the icons/ folder.</strong></p>';
+        }
+    </script>
+</body>
+</html> 

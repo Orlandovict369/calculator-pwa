@@ -1,0 +1,409 @@
+/* 
+===========================================
+COMPONENT STYLES
+===========================================
+
+This file contains styles for specific UI components:
+1. Calculator Display
+2. Button System
+3. Memory Panel
+
+WHY SEPARATE COMPONENTS:
+- Each component is self-contained
+- Easy to modify without affecting others
+- Clear organization for future features
+- Reusable button system for extensions
+*/
+
+/* 
+===========================================
+CALCULATOR DISPLAY
+===========================================
+Shows current expression and result
+*/
+.display-container {
+    background: var(--primary-bg);
+    border-radius: var(--border-radius);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-sm);
+}
+
+.display {
+    text-align: right;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-xs);
+}
+
+.display-expression {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    min-height: 1.5rem;
+    word-break: break-all;
+    
+    /* Smooth transitions when content changes */
+    transition: var(--transition);
+}
+
+.display-result {
+    font-size: var(--font-size-display);
+    font-weight: 300;
+    color: var(--text-primary);
+    min-height: 3rem;
+    
+    /* Handle long numbers gracefully */
+    word-break: break-all;
+    line-height: 1;
+}
+
+/* 
+When there's an error, highlight it clearly
+*/
+.display.error .display-result {
+    color: #ff6b6b;
+    font-size: var(--font-size-lg);
+}
+
+/* 
+===========================================
+BUTTON SYSTEM
+===========================================
+Modular button system that's easy to extend
+*/
+
+/* 
+BUTTON GRID LAYOUT
+Using CSS Grid for responsive button layout
+*/
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+    
+    /* 
+    EDUCATIONAL NOTE: CSS Grid Layout Strategy
+    - Grid: Best for 2D layouts (rows AND columns)
+    - Flexbox: Best for 1D layouts (row OR column)
+    
+    Our layout is now a clean 4x6 grid:
+    Row 1: [AC] [CE] [%] [÷]
+    Row 2: [7] [8] [9] [×]  
+    Row 3: [4] [5] [6] [-]
+    Row 4: [1] [2] [3] [+]
+    Row 5: [0] [.] [+/-] [=]  ← All equal-sized for better UX
+    Row 6: [History] (spans full width)
+    
+    Benefits of equal-sized bottom row:
+    - More consistent visual hierarchy
+    - Easier touch targets on mobile
+    - Follows modern calculator conventions
+    */
+}
+
+/* History button spans full width at bottom */
+.btn-memory {
+    grid-column: 1 / -1;
+    margin-top: var(--space-sm);
+}
+
+/* 
+BASE BUTTON STYLES
+All buttons share these styles
+*/
+.btn {
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    
+    /* Consistent button sizing */
+    height: 60px;
+    
+    /* Prevent text selection on buttons */
+    user-select: none;
+    
+    /* Accessibility: Focus outline */
+    outline: none;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--btn-operator);
+    outline-offset: 2px;
+}
+
+/* 
+BUTTON VARIANTS
+Different button types for different purposes
+*/
+
+/* Number buttons (0-9, .) */
+.btn-number {
+    background: var(--btn-number);
+    color: var(--text-primary);
+}
+
+.btn-number:hover {
+    background: var(--btn-number-hover);
+}
+
+.btn-number:active {
+    transform: scale(0.95);
+}
+
+/* Operator buttons (+, -, ×, ÷) */
+.btn-operator {
+    background: var(--btn-operator);
+    color: white;
+    font-weight: 600;
+}
+
+.btn-operator:hover {
+    background: var(--btn-operator-hover);
+}
+
+.btn-operator:active {
+    transform: scale(0.95);
+}
+
+/* Utility buttons (AC, CE, MEM) */
+.btn-utility {
+    background: var(--btn-utility);
+    color: var(--text-primary);
+    font-size: var(--font-size-md);
+}
+
+.btn-utility:hover {
+    background: var(--btn-utility-hover);
+}
+
+.btn-utility:active {
+    transform: scale(0.95);
+}
+
+/* Unary operation buttons (+/-, %) */
+.btn-unary {
+    background: var(--btn-utility);
+    color: var(--text-primary);
+    font-weight: 600;
+    
+    /* 
+    EDUCATIONAL NOTE: Unary vs Binary Operations
+    - Unary: Operations on one number (+/-, %, square root)
+    - Binary: Operations on two numbers (+, -, ×, ÷)
+    We style unary operations similar to utilities but with distinct weight
+    */
+}
+
+.btn-unary:hover {
+    background: var(--btn-utility-hover);
+}
+
+.btn-unary:active {
+    transform: scale(0.95);
+}
+
+/* Equals button - styled like operators (orange) */
+.btn-equals {
+    background: var(--btn-operator);
+    color: white;
+    font-weight: 600;
+    
+    /* 
+    EDUCATIONAL NOTE: Layout Change
+    Previously the equals button was positioned separately and zero button was double-wide.
+    Now all bottom row buttons are equal-sized for better visual balance.
+    We style equals like other operators for consistency.
+    */
+}
+
+.btn-equals:hover {
+    background: var(--btn-operator-hover);
+}
+
+.btn-equals:active {
+    transform: scale(0.95);
+}
+
+/* 
+REMOVED: Zero button special sizing
+The .btn-zero class is no longer needed since all buttons are now equal-sized.
+This creates a more balanced and modern calculator layout.
+*/
+
+/* Small utility buttons */
+.btn-small {
+    height: 36px;
+    font-size: var(--font-size-sm);
+    padding: var(--space-xs) var(--space-sm);
+}
+
+/* 
+BUTTON STATES
+Visual feedback for user interactions
+*/
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+    transform: none;
+}
+
+/* Pressed state for visual feedback */
+.btn.pressed {
+    transform: scale(0.95);
+    opacity: 0.8;
+}
+
+/* 
+===========================================
+MEMORY PANEL
+===========================================
+Shows calculation history
+*/
+.memory-panel {
+    background: var(--accent-bg);
+    border-radius: var(--border-radius);
+    padding: var(--space-lg);
+    
+    /* Initially hidden */
+    display: none;
+    
+    /* Smooth show/hide animation */
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: var(--transition);
+}
+
+/* Show memory panel when active */
+.memory-panel.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.memory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--btn-utility);
+}
+
+.memory-header h2 {
+    font-size: var(--font-size-lg);
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.memory-list {
+    max-height: 200px;
+    overflow-y: auto;
+    
+    /* Custom scrollbar for webkit browsers */
+    scrollbar-width: thin;
+    scrollbar-color: var(--btn-utility) transparent;
+}
+
+.memory-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.memory-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.memory-list::-webkit-scrollbar-thumb {
+    background: var(--btn-utility);
+    border-radius: 3px;
+}
+
+/* Individual memory items */
+.memory-item {
+    padding: var(--space-sm);
+    margin-bottom: var(--space-xs);
+    background: var(--secondary-bg);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--btn-operator);
+    
+    /* Hover effect for interactivity */
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.memory-item:hover {
+    background: var(--btn-number);
+}
+
+.memory-item:last-child {
+    margin-bottom: 0;
+}
+
+.memory-expression {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+}
+
+.memory-result {
+    font-size: var(--font-size-md);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Empty state */
+.memory-empty {
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: var(--space-lg);
+}
+
+/* 
+===========================================
+RESPONSIVE ADJUSTMENTS
+===========================================
+Component-specific responsive behavior
+*/
+@media (max-width: 375px) {
+    .btn {
+        height: 50px;
+        font-size: var(--font-size-md);
+    }
+    
+    .display-result {
+        font-size: var(--font-size-xl);
+    }
+}
+
+@media (min-width: 768px) {
+    .btn {
+        height: 70px;
+    }
+    
+    .memory-list {
+        max-height: 300px;
+    }
+}
+
+/* 
+EDUCATIONAL NOTE: Component Architecture
+Each component (display, buttons, memory) is designed to:
+1. Be self-contained and reusable
+2. Use consistent naming conventions
+3. Follow the same state patterns
+4. Be easily extendable for future features
+
+This makes adding new features like:
+- Scientific calculator buttons
+- Themes
+- Settings panel
+- Export functionality
+Much easier to implement!
+*/ 

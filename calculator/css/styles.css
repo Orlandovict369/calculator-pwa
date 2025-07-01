@@ -1,0 +1,166 @@
+/* 
+===========================================
+EDUCATIONAL CSS STRUCTURE
+===========================================
+
+This file contains:
+1. CSS Custom Properties (CSS Variables) for easy theming
+2. Global resets and base styles
+3. Main layout structure
+4. Responsive design patterns
+
+WHY THIS APPROACH:
+- CSS Custom Properties make it easy to add themes later
+- Consistent spacing and color systems
+- Mobile-first responsive design
+- Clean separation between layout and component styles
+*/
+
+/* 
+CSS CUSTOM PROPERTIES (CSS Variables)
+These act like constants we can reuse throughout our styles.
+Easy to change for themes - just update these values!
+*/
+:root {
+    /* Color System */
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2d2d2d;
+    --accent-bg: #404040;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    
+    /* Button Colors */
+    --btn-number: #3a3a3a;
+    --btn-number-hover: #4a4a4a;
+    --btn-operator: #ff9500;
+    --btn-operator-hover: #ffb143;
+    --btn-utility: #666666;
+    --btn-utility-hover: #777777;
+    --btn-equals: #ff9500;
+    --btn-equals-hover: #ffb143;
+    
+    /* Spacing System */
+    --space-xs: 0.25rem;    /* 4px */
+    --space-sm: 0.5rem;     /* 8px */
+    --space-md: 1rem;       /* 16px */
+    --space-lg: 1.5rem;     /* 24px */
+    --space-xl: 2rem;       /* 32px */
+    
+    /* Typography */
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 2rem;
+    --font-size-display: 3rem;
+    
+    /* Layout */
+    --border-radius: 8px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --transition: all 0.2s ease;
+}
+
+/* 
+GLOBAL RESET AND BASE STYLES
+Remove browser inconsistencies and set sensible defaults
+*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--primary-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    
+    /* Center the calculator on screen */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+}
+
+/* 
+MAIN APP LAYOUT
+Container for the entire calculator app
+*/
+.calculator-app {
+    background: var(--secondary-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--space-lg);
+    width: 100%;
+    max-width: 400px;
+    
+    /* Make it easy to extend with new sections */
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+/* 
+APP HEADER
+Simple header that can be extended with settings, themes, etc.
+*/
+.app-header {
+    text-align: center;
+}
+
+.app-header h1 {
+    font-size: var(--font-size-lg);
+    font-weight: 300;
+    color: var(--text-secondary);
+}
+
+/* 
+CALCULATOR SECTION
+Main calculator interface
+*/
+.calculator {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+/* 
+RESPONSIVE DESIGN
+Mobile-first approach: base styles work on mobile,
+then we enhance for larger screens
+*/
+@media (min-width: 768px) {
+    body {
+        padding: var(--space-xl);
+    }
+    
+    .calculator-app {
+        max-width: 450px;
+        padding: var(--space-xl);
+    }
+}
+
+/* 
+UTILITY CLASSES
+Reusable styles that can be applied anywhere
+*/
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* 
+EDUCATIONAL NOTE: Why separate files?
+- styles.css: Global styles, variables, layout
+- components.css: Component-specific styles
+This makes it easier to find and modify specific parts
+of the interface as the app grows.
+*/ 

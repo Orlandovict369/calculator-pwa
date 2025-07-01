@@ -1,0 +1,16 @@
+# Headers for PWA deployment on Netlify
+
+/manifest.json
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=86400
+
+/sw.js
+  Content-Type: application/javascript
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=86400
+
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff 

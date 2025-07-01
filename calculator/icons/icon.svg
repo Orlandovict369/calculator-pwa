@@ -1,0 +1,57 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="#1a1a1a"/>
+  
+  <!-- Calculator Frame -->
+  <rect x="64" y="64" width="384" height="384" rx="32" fill="#2d2d2d" stroke="#ff8c42" stroke-width="4"/>
+  
+  <!-- Display Screen -->
+  <rect x="96" y="96" width="320" height="80" rx="8" fill="#000" stroke="#ff8c42" stroke-width="2"/>
+  
+  <!-- Display Text -->
+  <text x="400" y="150" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#ff8c42" text-anchor="end">123.45</text>
+  
+  <!-- Button Grid (4x4 grid representation) -->
+  <!-- Row 1 -->
+  <rect x="112" y="200" width="56" height="48" rx="8" fill="#4a4a4a" stroke="#666" stroke-width="1"/>
+  <rect x="184" y="200" width="56" height="48" rx="8" fill="#4a4a4a" stroke="#666" stroke-width="1"/>
+  <rect x="256" y="200" width="56" height="48" rx="8" fill="#4a4a4a" stroke="#666" stroke-width="1"/>
+  <rect x="328" y="200" width="56" height="48" rx="8" fill="#ff8c42" stroke="#666" stroke-width="1"/>
+  
+  <!-- Row 2 -->
+  <rect x="112" y="264" width="56" height="48" rx="8" fill="#666" stroke="#888" stroke-width="1"/>
+  <rect x="184" y="264" width="56" height="48" rx="8" fill="#666" stroke="#888" stroke-width="1"/>
+  <rect x="256" y="264" width="56" height="48" rx="8" fill="#666" stroke="#888" stroke-width="1"/>
+  <rect x="328" y="264" width="56" height="48" rx="8" fill="#ff8c42" stroke="#666" stroke-width="1"/>
+  
+  <!-- Row 3 -->
+  <rect x="112" y="328" width="56" height="48" rx="8" fill="#666" stroke="#888" stroke-width="1"/>
+  <rect x="184" y="328" width="56" height="48" rx="8" fill="#666" stroke="#888" stroke-width="1"/>
+  <rect x="256" y="328" width="56" height="48" rx="8" fill="#666" stroke="#888" stroke-width="1"/>
+  <rect x="328" y="328" width="56" height="48" rx="8" fill="#ff8c42" stroke="#666" stroke-width="1"/>
+  
+  <!-- Row 4 -->
+  <rect x="112" y="392" width="128" height="48" rx="8" fill="#666" stroke="#888" stroke-width="1"/>
+  <rect x="256" y="392" width="56" height="48" rx="8" fill="#666" stroke="#888" stroke-width="1"/>
+  <rect x="328" y="392" width="56" height="48" rx="8" fill="#ff8c42" stroke="#666" stroke-width="1"/>
+  
+  <!-- Button Labels -->
+  <text x="140" y="229" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">AC</text>
+  <text x="212" y="229" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">CE</text>
+  <text x="284" y="229" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">%</text>
+  <text x="356" y="229" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">÷</text>
+  
+  <text x="140" y="293" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">7</text>
+  <text x="212" y="293" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">8</text>
+  <text x="284" y="293" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">9</text>
+  <text x="356" y="293" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">×</text>
+  
+  <text x="140" y="357" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">4</text>
+  <text x="212" y="357" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">5</text>
+  <text x="284" y="357" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">6</text>
+  <text x="356" y="357" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">-</text>
+  
+  <text x="176" y="421" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">0</text>
+  <text x="284" y="421" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">.</text>
+  <text x="356" y="421" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">=</text>
+</svg> 
